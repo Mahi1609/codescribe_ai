@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CodeScribe AI - Upload</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+    label, input, select { display: block; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>📂 Upload Project</h1>
+  <form method="POST" enctype="multipart/form-data">
+    <label>Upload ZIP:</label>
+    <input type="file" name="code_zip">
+
+    <label>Or GitHub URL:</label>
+    <input type="text" name="github_url">
+
+    <label>Output format:</label>
+    <select name="format">
+      <option value="md">Markdown</option>
+      <option value="txt">Text</option>
+    </select>
+
+    <br><br>
+    <button type="submit">🛠️ Generate Documentation</button>
+  </form>
+</body>
+</html>

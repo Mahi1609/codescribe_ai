@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Prediction Result</title>
+    <!-- <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}" -->
+    <!-- /> -->
+     <style>
+        
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-image: url('/static/pexels-iriser-1379636.jpg'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(245, 245, 245, 0.6); 
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ffffffcc;
+            color: #000;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #ddd;
+        }
+        h2 {
+            color: #fafafa;
+            
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Predicted Ride Demand :</h1>
+      <div class="result">{{ prediction }}</div>
+      <a href="/" style="text-decoration: none"
+        ><button>Predict Again</button></a>
+    </div>
+  </body>
+</html>

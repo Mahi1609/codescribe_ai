@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview - CodeScribe AI</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #fff; }
+    pre, code { background: #f0f0f0; padding: 1rem; display: block; }
+    .button { margin: 1rem 0; display: inline-block; padding: 0.5rem 1rem; background: #0077cc; color: white; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>📖 Documentation Preview</h1>
+  <a class="button" href="{{ download_link }}">⬇️ Download</a>
+  <hr>
+  <div>{{ html_content|safe }}</div>
+</body>
+</html>

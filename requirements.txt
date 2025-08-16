@@ -1,0 +1,21 @@
+# Web framework
+flask
+
+# HTTP requests
+requests
+
+# Template rendering
+jinja2
+
+# For parsing environment variables
+python-dotenv
+
+# For CLI enhancements
+click
+
+# For language detection
+pygments
+
+gitpython
+
+markdown
