@@ -21,3 +21,5 @@ gitpython
 markdown
 
 gunicorn
+
+pytest
