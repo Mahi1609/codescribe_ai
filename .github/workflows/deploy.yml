@@ -67,7 +67,7 @@ jobs:
 
       - name: ✅ Run Tests before Deploy
         run: |
-          pytest codescribe_ai/tests --maxfail=1 --disable-warnings -q
+          pytest codescribe_ai/tests --maxfail=1  -q
 
       - name: 🚀 Deploy to Render
         run: |
