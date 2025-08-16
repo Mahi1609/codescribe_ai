@@ -1,7 +1,7 @@
 import unittest
 import tempfile
 import os
-from core.env_var_parser import extract_env_variables
+from codescribe_ai.core.env_var_parser import extract_env_variables
 
 class TestEnvVarParser(unittest.TestCase):
 

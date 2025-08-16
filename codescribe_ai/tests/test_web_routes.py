@@ -1,7 +1,7 @@
 import unittest
 import os
 from io import BytesIO
-from main import app
+from codescribe_ai.main import app
 
 class TestFlaskRoutes(unittest.TestCase):
     def setUp(self):

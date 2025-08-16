@@ -1,5 +1,5 @@
 import unittest
-from core import tokenizer
+from codescribe_ai.core import tokenizer
 
 class TestTokenizer(unittest.TestCase):
     def test_chunking_respects_token_limit(self):

@@ -2,7 +2,7 @@ import unittest
 import tempfile
 import os
 import json
-from core.usage_instruction_builder import generate_usage_instruction
+from codescribe_ai.core.usage_instruction_builder import generate_usage_instruction
 
 class TestUsageInstructionBuilder(unittest.TestCase):
 

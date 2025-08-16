@@ -1,5 +1,5 @@
 import unittest
-from core import parser
+from codescribe_ai.core import parser
 import tempfile
 import os
 

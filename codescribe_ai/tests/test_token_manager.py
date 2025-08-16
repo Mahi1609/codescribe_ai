@@ -1,5 +1,5 @@
 import unittest
-from core.token_manager import TokenManager
+from codescribe_ai.core.token_manager import TokenManager
 
 def mock_token_estimator(text):  # Fake estimator: 1 token = 4 chars
     return len(text) // 4

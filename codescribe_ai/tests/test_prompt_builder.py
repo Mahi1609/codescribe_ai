@@ -1,5 +1,5 @@
 import unittest
-from core import prompt_builder
+from codescribe_ai.core import prompt_builder
 
 class TestPromptBuilder(unittest.TestCase):
     def test_build_prompt_with_file(self):

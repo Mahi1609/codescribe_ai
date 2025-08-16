@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from core import summarizer
+from codescribe_ai.core import summarizer
 
 class TestGroqSummarizer(unittest.TestCase):
 

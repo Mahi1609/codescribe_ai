@@ -2,7 +2,7 @@ import unittest
 import tempfile
 import os
 import json
-from core.dependency_parser import extract_all_dependencies
+from codescribe_ai.core.dependency_parser import extract_all_dependencies
 
 class TestDependencyParser(unittest.TestCase):
 
