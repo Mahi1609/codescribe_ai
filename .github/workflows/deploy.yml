@@ -30,7 +30,7 @@ jobs:
       - name: ✅ Run Tests
         run: |
           
-          pytest codescribe_ai/tests --maxfail=1 --disable-warnings -q
+          python -m pytest codescribe_ai/tests --maxfail=1 --disable-warnings -q
 
       - name: 🚀 Trigger Render Deploy
         if: success()  # only runs if tests pass
