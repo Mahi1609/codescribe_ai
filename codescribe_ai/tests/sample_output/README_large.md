@@ -79,17 +79,17 @@ In summary, `config.py` is a simple configuration module that loads an API key f
 ## 🧩 Code File Summaries
 ### 📄 `main.py`
 
-Here is a clean and concise summary of the `main.py` file:
+Here is a clean and high-level description of the `main.py` file:
 
-**Main Purpose:** This file serves as an entry point for a Python application, demonstrating the usage of an external utility function from the `utils` module.
+**Main Purpose:** This file serves as an entry point for a Python application, demonstrating the usage of an external utility function.
 
 **Key Components:**
 
-* Imports the `add` function from the `utils` module.
-* Uses a guard clause (`if __name__ == '__main__':`) to ensure the code is executed only when the script is run directly.
-* Calls the `add` function with arguments 2 and 3 and prints the result to the console.
+* The file imports and utilizes the `add` function from the `utils` module.
+* The script ensures that the code within the `if __name__ == '__main__':` block is executed only when run directly, not when imported as a module.
+* The `add` function is called with arguments 2 and 3, and the result is printed to the console.
 
-**In summary,** this file showcases how to utilize an external utility function (`add`) from the `utils` module and prints the result to the console when run directly.
+**In summary,** this file showcases how to import and use an external utility function from a separate module, printing the result to the console when run directly.
 
 
 ---

@@ -29,6 +29,7 @@ jobs:
 
       - name: ✅ Run Tests
         run: |
+          cd codescribe_ai 
           pytest --maxfail=1 --disable-warnings -q
 
       - name: 🚀 Trigger Render Deploy
