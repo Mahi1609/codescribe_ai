@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v4
@@ -64,13 +64,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: 📦 Install project package
+        run: |
+          pip install -e .
+
       - name: 📝 Generate README using CLI
         run: |
           mkdir -p output
           codescribe ./examples/sample_project -o output/README.md
 
       - name: 📤 Upload README Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: generated-readme
           path: output/README.md
+
