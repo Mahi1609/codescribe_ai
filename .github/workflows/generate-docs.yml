@@ -1,81 +1,81 @@
-# name: Generate Docs with CodeScribe AI
-
-# on:
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
-#   workflow_dispatch:
-
-# jobs:
-#   build-docs:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: 📥 Checkout code
-#       uses: actions/checkout@v4
-
-#     - name: 🐍 Set up Python
-#       uses: actions/setup-python@v4
-#       with:
-#         python-version: 3.10
-
-#     - name: 📦 Install dependencies
-#       run: |
-#         python -m pip install --upgrade pip
-#         pip install -r requirements.txt
-
-#     - name: 🧪 Run unit tests
-#       run: |
-#         python -m unittest discover tests
-
-#     - name: 🛠 Run documentation pipeline
-#       run: |
-#         python scripts/run_pipeline.py
-
-#     - name: 📤 Upload generated README
-#       uses: actions/upload-artifact@v3
-#       with:
-#         name: Generated-Docs
-#         path: docs/README.md
-
-
-
-name: 📖 Generate Documentation
+name: Generate Docs with CodeScribe AI
 
 on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  generate-docs:
+  build-docs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
 
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
 
-      - name: 📦 Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: 📦 Install project package
-        run: |
-          pip install -e .
+    - name: 🧪 Run unit tests
+      run: |
+        python -m unittest discover tests
 
-      - name: 📝 Generate README using CLI
-        run: |
-          mkdir -p output
-          codescribe ./examples/sample_project -o output/README.md
+    - name: 🛠 Run documentation pipeline
+      run: |
+        python .\codescribe_ai\scripts\run_pipeline.py
 
-      - name: 📤 Upload README Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: generated-readme
-          path: output/README.md
+    - name: 📤 Upload generated README
+      uses: actions/upload-artifact@v3
+      with:
+        name: Generated-Docs
+        path: docs/README.md
+
+
+
+# name: 📖 Generate Documentation
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   generate-docs:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: 📥 Checkout Code
+#         uses: actions/checkout@v4
+
+#       - name: 🐍 Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.10"
+
+#       - name: 📦 Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r requirements.txt
+
+#       - name: 📦 Install project package
+#         run: |
+#           pip install -e .
+
+#       - name: 📝 Generate README using CLI
+#         run: |
+#           mkdir -p output
+#           codescribe ./examples/sample_project -o output/README.md
+
+#       - name: 📤 Upload README Artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: generated-readme
+#           path: output/README.md
 
