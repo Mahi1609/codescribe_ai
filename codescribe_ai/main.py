@@ -1,8 +1,9 @@
+from codescribe_ai.scripts.run_pipeline import run_codescribe_pipeline
 from flask import Flask, render_template, request, redirect, url_for, send_file
 import os, zipfile, uuid, shutil
 from git import Repo
 from markdown import markdown
-from scripts.run_pipeline import run_codescribe_pipeline
+
 
 app = Flask(__name__)
 UPLOADS = "uploads"
