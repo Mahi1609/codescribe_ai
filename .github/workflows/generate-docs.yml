@@ -52,7 +52,7 @@ jobs:
 
     steps:
       - name: 📥 Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🐍 Set up Python
         uses: actions/setup-python@v4
@@ -70,7 +70,7 @@ jobs:
           codescribe ./examples/sample_project -o output/README.md
 
       - name: 📤 Upload README Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: generated-readme
           path: output/README.md
