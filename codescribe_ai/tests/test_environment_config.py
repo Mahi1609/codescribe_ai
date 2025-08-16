@@ -78,7 +78,7 @@
 #     unittest.main()
 
 
-
+from codescribe_ai.core.environment_config import detect_environment
 import os
 
 def detect_environment(project_path: str) -> str:
