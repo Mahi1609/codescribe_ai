@@ -1,20 +1,62 @@
-name: Build, Test & Deploy Flask API to Render
+# name: Build, Test & Deploy Flask API to Render
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: 📂 Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: 🐍 Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.10"
+
+#       - name: 📦 Install dependencies
+#         run: |
+#           python -m pip install --upgrade pip
+#           pip install -r requirements.txt
+      
+#       - name: Install dependencies
+#         run: |
+#           pip install pytest
+
+#       - name: ✅ Run Tests
+#         run: |
+          
+#           pytest codescribe_ai/tests --maxfail=1 --disable-warnings -q
+
+#       - name: 🚀 Trigger Render Deploy
+#         if: success()  # only runs if tests pass
+#         run: |
+#           curl -X POST "$RENDER_DEPLOY_HOOK"
+#         env:
+#           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+
+
+name: 🚀 Deploy App
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📂 Checkout code
-        uses: actions/checkout@v4
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
 
       - name: 🐍 Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
@@ -22,19 +64,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
-      - name: Install dependencies
-        run: |
-          pip install pytest
 
-      - name: ✅ Run Tests
+      - name: ✅ Run Tests before Deploy
         run: |
-          
-          python -m pytest codescribe_ai/tests --maxfail=1 --disable-warnings -q
+          pytest codescribe_ai/tests --maxfail=1 --disable-warnings -q
 
-      - name: 🚀 Trigger Render Deploy
-        if: success()  # only runs if tests pass
+      - name: 🚀 Deploy to Render
         run: |
-          curl -X POST "$RENDER_DEPLOY_HOOK"
-        env:
-          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+          echo "Here you put your Render deployment command (or API call)"
