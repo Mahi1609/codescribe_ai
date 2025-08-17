@@ -27,8 +27,7 @@ jobs:
 
     - name: 🧪 Run all unit + integration tests
       run: |
-        cd codescribe_ai
-        python -m unittest discover tests
+        python -m unittest discover codescribe_ai/tests
 
     - name: ✅ Upload README (optional)
       if: success()
