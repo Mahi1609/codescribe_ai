@@ -16,13 +16,13 @@ with open(HERE / "requirements.txt", encoding="utf-8") as f:
 
 setup(
     name="codescribe-ai",
-    version="1.0.0",
+    version="0.1.3",
     author="Mahesh Yannawar",
     author_email="glory@gloryofm.online",
     description="AI-powered README generator for any codebase",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/codescribe_ai",
+    url="https://github.com/Mahi1609/codescribe_ai",
     packages=find_packages(),  # Automatically finds codescribe_ai and submodules
     include_package_data=True,
     install_requires=install_requires,
