@@ -1,5 +1,6 @@
-import unittest
 from codescribe_ai.core.formatter import collapse_long_sections
+import unittest
+
 
 class TestFormatter(unittest.TestCase):
     def test_trims_excessively_long_summary(self):
