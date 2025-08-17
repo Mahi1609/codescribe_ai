@@ -34,10 +34,11 @@ jobs:
         python .\codescribe_ai\scripts\run_pipeline.py
 
     - name: 📤 Upload generated README
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Generated-Docs
         path: docs/README.md
+
 
 
 
