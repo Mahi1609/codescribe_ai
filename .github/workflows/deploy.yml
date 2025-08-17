@@ -33,7 +33,7 @@ jobs:
           pytest codescribe_ai/tests --maxfail=1 --disable-warnings -q
 
       - name: 🚀 Trigger Render Deploy
-        if: success()  # only runs if tests pass
+        
         run: |
           curl -X POST "$RENDER_DEPLOY_HOOK"
         env:
