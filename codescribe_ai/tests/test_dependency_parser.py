@@ -1,4 +1,4 @@
-from core.dependency_parser import extract_all_dependencies
+from codescribe_ai.core.dependency_parser import extract_all_dependencies
 import unittest
 import tempfile
 import os
