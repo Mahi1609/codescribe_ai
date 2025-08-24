@@ -39,6 +39,7 @@ app = Flask(__name__)
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 UPLOADS = os.path.join(BASE_DIR, "uploads")
 OUTPUTS = os.environ.get("OUTPUT_DIR", os.path.join(BASE_DIR, "generated"))
+
 dotenv_path = BASE_DIR / ".env"
 print("Loading .env from:", dotenv_path)
 load_dotenv(dotenv_path)  # Load environment variables from .env file
