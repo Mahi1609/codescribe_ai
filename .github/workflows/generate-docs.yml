@@ -1,5 +1,9 @@
 name: Generate Docs with CodeScribe AI
 
+
+env:
+  GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+
 on:
   push:
     branches: [ main ]

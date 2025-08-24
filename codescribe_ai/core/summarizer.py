@@ -15,8 +15,8 @@ load_dotenv(env_path, override=True)
 raw = os.getenv("GROQ_API_KEY", "")
 GROQ_API_KEY = (raw or "").strip().strip('"').strip("'").replace("\r", "").replace("\n", "")
 
-# if not GROQ_API_KEY:
-#     raise ValueError("❌ GROQ_API_KEY missing or invalid in .env")
+if not GROQ_API_KEY:
+    raise ValueError("❌ GROQ_API_KEY missing or invalid in .env")
 
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama3-8b-8192"
