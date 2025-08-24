@@ -1,13 +1,59 @@
+
+import sys, os
+
+# Make sure the *project root* is first on sys.path
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+
+# After sys.path fix, import and print the module paths
+import requests, os, pathlib
 from codescribe_ai.scripts.run_pipeline import run_codescribe_pipeline
 from flask import Flask, render_template, request, redirect, url_for, send_file
 import os, zipfile, uuid, shutil
 from git import Repo
 from markdown import markdown
+import pathlib
+from dotenv import load_dotenv
+
+
+
+
+try:
+    import codescribe_ai.core.summarizer as sm
+    print("🔎 Using summarizer at:", sm.__file__)
+except Exception as e:
+    print("⚠️ Could not import codescribe_ai.core.summarizer:", repr(e))
+    # fallback: legacy import path if you had bare 'core'
+    try:
+        import core.summarizer as sm2
+        print("🔎 Using summarizer (legacy) at:", sm2.__file__)
+    except Exception as e2:
+        print("❌ Could not import legacy core.summarizer:", repr(e2))
+
+
 
 app = Flask(__name__)
 
+BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
+dotenv_path = BASE_DIR / ".env"
+print("Loading .env from:", dotenv_path)
+load_dotenv(dotenv_path)  # Load environment variables from .env file
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY environment variable not set.")
+else:
+    print("GROQ_API_KEY loaded successfully.")
+
+Key=os.getenv("GROQ_API_KEY")
+resp=requests.get("https://api.groq.com/v1/chat/completions", 
+                  headers={"Authorization": f"Bearer {Key}", "Content-Type":"application/json"},
+                  json= {"model":"llama3-8b-8192", "messages":[{"role":"user","content":"ping"}]})
+print("GROQ API response status:", resp.status_code)
+
 # 🔹 Configurable base directories
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 UPLOADS = os.path.join(BASE_DIR, "uploads")
 OUTPUTS = os.environ.get("OUTPUT_DIR", os.path.join(BASE_DIR, "generated"))
 
