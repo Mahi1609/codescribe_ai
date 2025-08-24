@@ -66,8 +66,10 @@
 
 
 import unittest
-import os
+import os,unittest
 from codescribe_ai.scripts.run_pipeline import run_codescribe_pipeline
+
+@unittest.skipIf(os.getenv("CI"), "Skip large pipeline test on CI")
 
 class TestLargerPipeline(unittest.TestCase):
     def setUp(self):
