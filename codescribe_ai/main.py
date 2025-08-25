@@ -10,12 +10,14 @@ if PROJECT_ROOT not in sys.path:
 # After sys.path fix, import and print the module paths
 import requests, os, pathlib
 from codescribe_ai.scripts.run_pipeline import run_codescribe_pipeline
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify
 import os, zipfile, uuid, shutil
 from git import Repo
 from markdown import markdown
 import pathlib
 from dotenv import load_dotenv
+from codescribe_ai.core.summarizer import summarize_code
+
 
 
 
@@ -116,6 +118,21 @@ def preview(filename):
 @app.route("/download/<filename>")
 def download(filename):
     return send_file(os.path.join(OUTPUTS, filename), as_attachment=True)
+
+
+@app.route("/api/summarize", methods=["POST"])
+def api_summarize():
+    data = request.get_json(force=True)
+    prompt = data.get("prompt", "")
+    environment = data.get("environment", "generic")
+    if not prompt:
+        return jsonify({"error": "No prompt provided"}), 400
+    try:
+        summary = summarize_code(prompt, environment=environment)
+        return jsonify({"summary": summary})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)

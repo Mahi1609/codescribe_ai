@@ -21,6 +21,7 @@ if not GROQ_API_KEY:
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "llama3-8b-8192"
 
+FLASK_API_URL = "https://codescribe-ai.onrender.com/api/summarize"
 
 def summarize_code(code_chunk, file_path=None, environment="generic"):
     """
@@ -29,27 +30,31 @@ def summarize_code(code_chunk, file_path=None, environment="generic"):
     lang = detect_language_from_extension(file_path or "")
     prompt = build_prompt(code_chunk, file_path=file_path, environment=environment)
 
-    payload = {
-        "model": MODEL,
-        "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0.3,
-    }
+    if GROQ_API_KEY:  # direct Groq call
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json",
+        }
+        payload = {"model": MODEL, "messages": [{"role": "user", "content": prompt}], "temperature": 0.3}
+        resp = requests.post(API_URL, headers=headers, json=payload, timeout=30)
+        if resp.status_code == 200:
+            return resp.json()["choices"][0]["message"]["content"]
+        else:
+            raise RuntimeError(f"❌ Groq API error: {resp.status_code} - {resp.text}")
 
-    try:
-        resp = requests.post(
-            API_URL,
-            headers={"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"},
-            json=payload,
-            timeout=30,
-            proxies={"http": None, "https": None},  # bypass proxies
-        )
-    except requests.RequestException as e:
-        raise RuntimeError(f"🌐 Network error contacting Groq: {e}")
-
-    if resp.status_code == 200:
-        return resp.json()["choices"][0]["message"]["content"]
-    else:
-        raise RuntimeError(f"❌ Groq API error: {resp.status_code} - {resp.text}")
+    else:  # fallback → call Flask API
+        try:
+            resp = requests.post(
+                FLASK_API_URL,
+                json={"prompt": prompt, "environment": environment},
+                timeout=60,
+            )
+            if resp.status_code == 200:
+                return resp.json().get("summary", "")
+            else:
+                raise RuntimeError(f"❌ Flask API error: {resp.status_code} - {resp.text}")
+        except requests.RequestException as e:
+            raise RuntimeError(f"🌐 Network error contacting Flask API: {e}")
 
 
 def summarize_file_from_chunks(chunk_summaries, file_path=None, environment="generic"):
