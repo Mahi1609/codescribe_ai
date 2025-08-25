@@ -16,7 +16,7 @@ with open(HERE / "requirements.txt", encoding="utf-8") as f:
 
 setup(
     name="codescribe-ai",
-    version="0.1.3",
+    version="0.1.6",
     author="Mahesh Yannawar",
     author_email="glory@gloryofm.online",
     description="AI-powered README generator for any codebase",

@@ -41,7 +41,7 @@ def summarize_code(code_chunk, file_path=None, environment="generic"):
             headers={"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"},
             json=payload,
             timeout=30,
-            # proxies={"http": None, "https": None},  # bypass proxies
+            proxies={"http": None, "https": None},  # bypass proxies
         )
     except requests.RequestException as e:
         raise RuntimeError(f"🌐 Network error contacting Groq: {e}")
