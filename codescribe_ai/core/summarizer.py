@@ -19,7 +19,7 @@ if not GROQ_API_KEY:
     raise ValueError("❌ GROQ_API_KEY missing or invalid in .env")
 
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "gemma2-9b-it"
 
 
 def summarize_code(code_chunk, file_path=None, environment="generic"):
