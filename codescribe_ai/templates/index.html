@@ -4,28 +4,136 @@
   <meta charset="UTF-8">
   <title>CodeScribe AI - Upload</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
-    label, input, select { display: block; margin-top: 1rem; }
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #e8f0ff, #fdfdfd);
+      color: #2b2b2b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* Main wrapper */
+    .container {
+      width: 100%;
+      max-width: 500px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.8s ease;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: #1f3a93;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      color: #555;
+    }
+
+    label {
+      display: block;
+      margin-top: 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    input[type="file"],
+    input[type="text"],
+    select {
+      width: 100%;
+      margin-top: 0.6rem;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: 0.25s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #aaa;
+      font-style: italic;
+    }
+
+    /* Button styling */
+    button {
+      margin-top: 2rem;
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: 0.25s ease;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #357ab8, #2c6394);
+      box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 8px rgba(74, 144, 226, 0.3);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <h1>📝 CodeScribe AI by Mahesh</h1>
-  <h2>📂 Upload Project</h2>
-  <form method="POST" enctype="multipart/form-data">
-    <label>Upload ZIP:</label>
-    <input type="file" name="code_zip">
+  <div class="container">
+    <h1>📝 CodeScribe AI by Mahesh</h1>
+    <h2>📂 Upload Project</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <label>Upload ZIP:</label>
+      <input type="file" name="code_zip">
 
-    <label>Or GitHub URL:</label>
-    <input type="text" name="github_url">
+      <label>Or GitHub URL:</label>
+      <input type="text" name="github_url" placeholder="https://github.com/user/repo">
 
-    <label>Output format:</label>
-    <select name="format">
-      <option value="md">Markdown</option>
-      <option value="txt">Text</option>
-    </select>
+      <label>Output format:</label>
+      <select name="format">
+        <option value="md">Markdown</option>
+        <option value="txt">Text</option>
+      </select>
 
-    <br><br>
-    <button type="submit">🛠️ Generate Documentation</button>
-  </form>
+      <button type="submit">🛠️ Generate Documentation</button>
+    </form>
+  </div>
 </body>
 </html>
