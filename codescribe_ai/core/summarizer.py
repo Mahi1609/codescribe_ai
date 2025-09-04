@@ -1,13 +1,15 @@
+# core/summarizer.py using multiple models via direct Groq API calls
+# core/summarizer.py
+
 import os
 import pathlib
 import requests
-import re
 from dotenv import load_dotenv, find_dotenv
 
-from core.prompt_builder import build_prompt
-from core.lang_detector import detect_language_from_extension
+from codescribe_ai.core.prompt_builder import build_prompt
+from codescribe_ai.core.lang_detector import detect_language_from_extension
 
-# --- Load and clean API key safely ---
+# --- Load API key safely ---
 BASE_DIR = pathlib.Path(__file__).parents[2].resolve()
 env_path = find_dotenv(usecwd=True)
 load_dotenv(env_path, override=True)
@@ -19,18 +21,41 @@ if not GROQ_API_KEY:
     raise ValueError("❌ GROQ_API_KEY missing or invalid in .env")
 
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL = "gemma2-9b-it"
+
+# Default model if none provided
+DEFAULT_MODEL = "llama-3.3-70b-versatile"
 
 
-def summarize_code(code_chunk, file_path=None, environment="generic"):
+def summarize_code(
+    code_chunk: str,
+    file_path: str | None = None,
+    environment: str = "generic",
+    repo_context: dict | None = None,
+    model: str | None = None,
+) -> str:
     """
     Summarize a code chunk using Groq API.
+
+    Args:
+        code_chunk (str): Code to summarize.
+        file_path (str | None): Path for context.
+        environment (str): Framework/language detected.
+        repo_context (dict | None): Extra context (dependencies, env).
+        model (str | None): Override model (if None, use DEFAULT_MODEL).
+
+    Returns:
+        str: AI-generated summary.
     """
     lang = detect_language_from_extension(file_path or "")
-    prompt = build_prompt(code_chunk, file_path=file_path, environment=environment)
+    prompt = build_prompt(
+        code_chunk,
+        file_path=file_path,
+        environment=environment,
+        repo_context=repo_context,
+    )
 
     payload = {
-        "model": MODEL,
+        "model": model or DEFAULT_MODEL,   # 👈 dynamic model
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.3,
     }
@@ -38,7 +63,10 @@ def summarize_code(code_chunk, file_path=None, environment="generic"):
     try:
         resp = requests.post(
             API_URL,
-            headers={"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"},
+            headers={
+                "Authorization": f"Bearer {GROQ_API_KEY}",
+                "Content-Type": "application/json",
+            },
             json=payload,
             timeout=30,
             proxies={"http": None, "https": None},  # bypass proxies
@@ -52,25 +80,126 @@ def summarize_code(code_chunk, file_path=None, environment="generic"):
         raise RuntimeError(f"❌ Groq API error: {resp.status_code} - {resp.text}")
 
 
-def summarize_file_from_chunks(chunk_summaries, file_path=None, environment="generic"):
+def summarize_file_from_chunks(
+    chunk_summaries,
+    file_path: str | None = None,
+    environment: str = "generic",
+    repo_context: dict | None = None,
+    model: str | None = None,
+) -> str:
     """
-    Second pass summarization over combined chunk summaries.
-    Produces a coherent high-level file description.
+    Second-pass coherency summary for a file (summarize the summaries).
     """
     combined_summary = "\n".join(chunk_summaries)
     if not combined_summary.strip():
         return ""
 
     prompt = (
-        "You are a documentation assistant.\n"
-        "Given the following partial code summaries from a file, "
-        "generate a clean, high-level description of the file:\n\n"
+        "You are consolidating partial summaries into a single accurate file-level summary.\n"
+        "Given these partial notes, produce a coherent, high-level explanation of the file:\n\n"
         f"{combined_summary}\n\n"
-        "Make it clear, concise, and useful to a developer."
+        "Keep it concise and precise."
     )
 
-    # Reuse summarize_code to call Groq with cleaned key
-    return summarize_code(prompt, file_path=file_path, environment=environment)
+    return summarize_code(
+        prompt,
+        file_path=file_path,
+        environment=environment,
+        repo_context=repo_context,
+        model=model,   # 👈 propagate model choice
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# latest version using direct API calls with only one model (gemma2-9b-it)
+# import os
+# import pathlib
+# import requests
+# import re
+# from dotenv import load_dotenv, find_dotenv
+
+# from core.prompt_builder import build_prompt
+# from core.lang_detector import detect_language_from_extension
+
+# # --- Load and clean API key safely ---
+# BASE_DIR = pathlib.Path(__file__).parents[2].resolve()
+# env_path = find_dotenv(usecwd=True)
+# load_dotenv(env_path, override=True)
+
+# raw = os.getenv("GROQ_API_KEY", "")
+# GROQ_API_KEY = (raw or "").strip().strip('"').strip("'").replace("\r", "").replace("\n", "")
+
+# if not GROQ_API_KEY:
+#     raise ValueError("❌ GROQ_API_KEY missing or invalid in .env")
+
+# API_URL = "https://api.groq.com/openai/v1/chat/completions"
+# MODEL = "gemma2-9b-it"
+
+
+# def summarize_code(code_chunk: str, file_path: str | None = None, environment: str = "generic", repo_context: dict | None = None) -> str:
+#     """
+#     Summarize a code chunk using Groq API.
+#     """
+#     lang = detect_language_from_extension(file_path or "")
+#     prompt = build_prompt(code_chunk, file_path=file_path, environment=environment, repo_context=repo_context)
+
+#     payload = {
+#         "model": MODEL,
+#         "messages": [{"role": "user", "content": prompt}],
+#         "temperature": 0.3,
+#     }
+
+#     try:
+#         resp = requests.post(
+#             API_URL,
+#             headers={"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"},
+#             json=payload,
+#             timeout=30,
+#             proxies={"http": None, "https": None},  # bypass proxies
+#         )
+#     except requests.RequestException as e:
+#         raise RuntimeError(f"🌐 Network error contacting Groq: {e}")
+
+#     if resp.status_code == 200:
+#         return resp.json()["choices"][0]["message"]["content"]
+#     else:
+#         raise RuntimeError(f"❌ Groq API error: {resp.status_code} - {resp.text}")
+
+
+# def summarize_file_from_chunks(chunk_summaries, file_path=None, environment="generic",repo_context=None):
+#     """
+#     Second-pass coherency summary for a file (summarize the summaries).
+#     Notes:
+#     - Calls summarize_code() with a meta-prompt; passes repo_context through.
+#     - Called by scripts/run_pipeline.py after chunk loop if you use a 2-pass flow.
+#     """
+#     combined_summary = "\n".join(chunk_summaries)
+#     if not combined_summary.strip():
+#         return ""
+
+#     prompt = (
+#         "You are consolidating partial summaries into a single accurate file-level summary.\n"
+#         "Given these partial notes, produce a coherent, high-level explanation of the file:\n\n"
+#         f"{combined_summary}\n\n"
+#         "Keep it concise and precise."
+#     )
+
+#     # Reuse summarize_code to call Groq with cleaned key
+#     return summarize_code(prompt, file_path=file_path, environment=environment,repo_context=repo_context)
 
 
 

@@ -18,35 +18,38 @@ def generate_section(file_path, summary):  # Formats a file-level summary block 
 
 from core.env_var_descriptions import ENV_VAR_DESCRIPTIONS
 
-def generate_readme(summary_dict, dependencies=None, env_vars=None, usage=None, environment="generic", project_name="Codebase"):
+def generate_readme(
+    summary_dict,
+    dependencies,
+    env_vars,
+    usage,
+    environment,
+    project_name="Codebase",
+    overview="This project was auto-documented by CodeScribe AI.",
+    purpose="This project is designed to perform its core functionality.",
+    system_deps=None,
+):
     """
-    Generates README.md content using Jinja2 templating.
-
-    Args:
-        summary_dict (dict): File-wise summaries
-        dependencies (dict): Lang-wise dependency lists
-        env_vars (dict): Environment variables with descriptions
-        usage (str): Command or steps to run the project
-        environment (str): Detected tech stack/environment
-        project_name (str): Name of the project
-
-    Returns:
-        str: Final rendered Markdown string
+    Generate README content using Jinja2 templates.
     """
+    from jinja2 import Environment, FileSystemLoader
+    import os
+
     template_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template("readme_template.md")
 
-    content = template.render(
+    rendered = template.render(
         project_name=project_name,
-        overview="This project was auto-documented using CodeScribe AI.",
-        summary_dict=summary_dict,
+        overview=overview or "This project is auto-documented by CodeScribe AI.",
+        purpose=purpose or "perform its main functionality as intended.",
         dependencies=dependencies or {},
         env_vars=env_vars or {},
-        usage=usage or "python main.py",
-        environment=environment,
-        year="2025"
+        usage=usage or "",
+        summary_dict=summary_dict or {},
+        environment=environment or "generic",
+        system_deps=system_deps or []  # 🔥 New param
     )
 
-    return content
+    return rendered
 

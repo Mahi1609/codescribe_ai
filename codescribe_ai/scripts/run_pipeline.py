@@ -114,8 +114,9 @@ from core.formatter import collapse_long_sections
 from core.import_graph import build_import_graph
 # from core.call_graph import build_project_call_graph
 from core.lang_detector import detect_language_from_extension
+from core.project_summary import generate_project_overview
 
-def run_codescribe_pipeline(src_dir, output_file):
+def run_codescribe_pipeline(src_dir, output_file,model=None):
     """
     Executes the full documentation pipeline on a given code repository.
     """
@@ -123,6 +124,9 @@ def run_codescribe_pipeline(src_dir, output_file):
     token_manager.set_token_estimator(lambda text: len(text) // 4)
 
     env = detect_environment(src_dir)
+    project_summary = generate_project_overview(src_dir, environment=env)
+    overview = project_summary.get("overview", "This project is auto-documented by CodeScribe AI.")
+    purpose = project_summary.get("purpose", "This project is designed to perform its core functionality.")
     dependencies = extract_all_dependencies(src_dir)
     env_vars = extract_env_variables(src_dir)
     usage = generate_usage_instruction(src_dir, environment=env)
@@ -151,7 +155,7 @@ def run_codescribe_pipeline(src_dir, output_file):
                 print(f"⛔ Skipping chunk {i} of {file_path} (token budget exceeded)")
                 continue
             try:
-                summary = summarize_code(chunk, file_path=file_path, environment=env)
+                summary = summarize_code(chunk, file_path=file_path, environment=env,repo_context={"dependencies": dependencies, "language": lang,"env": env},model=model)
                 token_manager.add_usage(f"{file_path}::chunk_{i}", chunk)
                 all_summaries.append(summary.strip())
             except Exception as e:
@@ -165,6 +169,8 @@ def run_codescribe_pipeline(src_dir, output_file):
             all_summaries + ([context_note] if context_note else []),
             file_path=file_path,
             environment=env,
+            repo_context={"dependencies": dependencies, "language": lang,"env": env},
+            model=model,
         )
 
     summary_dict = collapse_long_sections(summary_dict)
@@ -175,7 +181,9 @@ def run_codescribe_pipeline(src_dir, output_file):
         env_vars=env_vars,
         usage=usage,
         environment=env,
-        project_name=os.path.basename(src_dir) or "Codebase"
+        project_name=os.path.basename(src_dir) or "Codebase",
+        overview=overview,
+        purpose=purpose,
     )
 
     os.makedirs(os.path.dirname(output_file), exist_ok=True)

@@ -37,9 +37,9 @@
       top: -50px; left: -50px;
     }
     .shape2 {
-      width: 400px; height: 400px;
+      width: 420px; height: 420px;
       background: #00c6ff;
-      bottom: -100px; right: -50px;
+      bottom: -120px; right: -60px;
       animation-delay: 3s;
     }
 
@@ -53,7 +53,7 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 480px;
+      max-width: 560px;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(20px);
       border-radius: 20px;
@@ -78,11 +78,14 @@
       margin-bottom: 2rem;
     }
 
+    form {
+      text-align: left;
+    }
+
     label {
       display: block;
       margin-top: 1.2rem;
       font-weight: 600;
-      text-align: left;
       font-size: 0.95rem;
       color: #f5f5f5;
     }
@@ -92,13 +95,17 @@
     select {
       width: 100%;
       margin-top: 0.6rem;
-      padding: 0.75rem;
+      padding: 0.9rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 0.95rem;
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
       transition: 0.3s ease;
+    }
+
+    input::placeholder {
+      color: #ddd;
     }
 
     input:focus,
@@ -108,8 +115,11 @@
       box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
     }
 
-    input::placeholder {
-      color: #ddd;
+    /* Small help text / hint */
+    .hint {
+      font-size: 0.8rem;
+      color: #e8e8e8cc;
+      margin-top: 0.4rem;
     }
 
     /* Button with neon glow */
@@ -152,17 +162,27 @@
 
   <!-- Glassmorphism upload card -->
   <div class="upload-container">
-    <h1>CodeScribe AI by Mahesh</h1>
-    <h2>📂 Upload Your Project</h2>
+    <h1>📝 CodeScribe AI by Mahesh</h1>
+    <h2>📂 Upload Project</h2>
+
     <form method="POST" enctype="multipart/form-data">
-      <label>Upload ZIP:</label>
-      <input type="file" name="code_zip">
+      <label for="code_zip">Upload ZIP:</label>
+      <input type="file" name="code_zip" id="code_zip">
 
-      <label>Or GitHub URL:</label>
-      <input type="text" name="github_url" placeholder="https://github.com/user/repo">
+      <label for="github_url">Or GitHub URL:</label>
+      <input type="text" name="github_url" id="github_url" placeholder="https://github.com/user/repo">
 
-      <label>Output format:</label>
-      <select name="format">
+      <label for="model">Choose Model:</label>
+      <select name="model" id="model">
+        <option value="llama-3.3-70b-versatile">Default</option>
+        <option value="qwen/qwen3-32b">qwen-qwq-32b</option>
+        <option value="llama-3.1-8b-instant">LLaMA3-8B</option>
+        <option value="gemma2-9b-it">Gemma2-9B</option>
+        <option value="meta-llama/llama-guard-4-12b">llama-guard-3-8b</option>
+      </select>
+
+      <label for="format">Output format:</label>
+      <select name="format" id="format">
         <option value="md">Markdown</option>
         <option value="txt">Text</option>
       </select>
