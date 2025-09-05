@@ -120,6 +120,12 @@ def run_codescribe_pipeline(src_dir, output_file,model=None):
     """
     Executes the full documentation pipeline on a given code repository.
     """
+    print(f"🚀 Running CodeScribe pipeline on: {src_dir}")
+    if model:
+        print(f"🤖 Using model: {model}")
+    else:
+        print("🤖 Using default model (from summarizer.py)")
+        
     token_manager = TokenManager(max_tokens_global=16000)
     token_manager.set_token_estimator(lambda text: len(text) // 4)
 
