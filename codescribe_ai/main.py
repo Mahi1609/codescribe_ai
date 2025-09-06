@@ -75,6 +75,7 @@ def index():
         zip_file = request.files.get("code_zip")
         github_url = request.form.get("github_url")
         output_ext = request.form.get("format", "md")
+        model_choice = request.form.get("model", None)
         output_file = os.path.join(OUTPUTS, f"{project_id}_README.{output_ext}")
 
         # Handle ZIP upload
@@ -95,7 +96,7 @@ def index():
             return "❌ Provide a ZIP or GitHub URL."
 
         # Run Codescribe pipeline
-        run_codescribe_pipeline(extract_path, output_file)
+        run_codescribe_pipeline(extract_path, output_file,model=model_choice)
 
         # Cleanup
         shutil.rmtree(extract_path, ignore_errors=True)
