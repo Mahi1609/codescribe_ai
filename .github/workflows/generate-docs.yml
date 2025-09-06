@@ -35,7 +35,7 @@ jobs:
 
     - name: 🛠 Run documentation pipeline
       run: |
-        python codescribe_ai/scripts/run_pipeline.py
+        python -m codescribe_ai.scripts.run_pipeline
 
     - name: 📤 Upload generated README
       uses: actions/upload-artifact@v4
